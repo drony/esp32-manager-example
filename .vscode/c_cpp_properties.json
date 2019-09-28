@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${IDF_PATH}/components/**",
+                "${IDF_PATH}/components/esp32/include/**",
+                "${IDF_PATH}/components/driver/include/",
+                "${IDF_PATH}/tools/unit-test-app/components/unity/include/",
+                "${workspaceFolder}/build/include"
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
+            },
+            "intelliSenseMode": "gcc-x64",
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c11",
+            "cppStandard": "c++17"
+        }
+    ],
+    "version": 4
+}

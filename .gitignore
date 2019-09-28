@@ -1,0 +1,6 @@
+# backups
+*.old
+
+# build
+build/
+.vscode/ipch/

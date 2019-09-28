@@ -1,0 +1,3 @@
+[submodule "components/esp32-manager"]
+	path = components/esp32-manager
+	url = git@github.com:pablobacho/esp32-manager.git

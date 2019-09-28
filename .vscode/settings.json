@@ -1,0 +1,21 @@
+{
+    "files.associations": {
+        "*.tcc": "c",
+        "cstddef": "cpp",
+        "list": "cpp",
+        "string": "cpp",
+        "limits": "cpp",
+        "memory": "cpp",
+        "new": "cpp",
+        "functional": "cpp",
+        "type_traits": "cpp",
+        "m5button.h": "c",
+        "*.contiki": "c",
+        "*.lwip": "c",
+        "freertos.h": "c",
+        "dallas_temperature.h": "c",
+        "m5stickc.h": "c",
+        "*.ipp": "c"
+    },
+    "C_Cpp.dimInactiveRegions": false
+}
