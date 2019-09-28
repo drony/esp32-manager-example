@@ -26,7 +26,7 @@ esp32_manager_namespace_t example_namespace = {
     .key = EXAMPLE_NAMESPACE_KEY,
     .friendly = EXAMPLE_NAMESPACE_FRIENDLY,
     .entries = example_entries,
-    .entries_size = EXAMPLE_ENTRIES_MAX
+    .size = EXAMPLE_ENTRIES_MAX
 };
 
 esp32_manager_entry_t counter_entry = {
@@ -98,6 +98,7 @@ void app_main(void)
         ESP_LOGE(TAG, "Error reading entries from namespace %s: %s", example_namespace.key, esp_err_to_name(e));
     }
 
+    // Start WiFi in AUTO mode
     e = esp32_manager_network_wifi_start(AUTO);
     if(e == ESP_OK) {
         ESP_LOGD(TAG, "WiFi started");
@@ -107,6 +108,7 @@ void app_main(void)
 
     while(1) {
         ++counter;
+        esp32_manager_mqtt_publish_entry(&example_namespace, &counter_entry); // publish counter value to MQTT broker
         ESP_LOGI(TAG, "Counter: %d, Delay: %d", counter, delay);
         vTaskDelay(delay / portTICK_PERIOD_MS);
     }
