@@ -17,8 +17,42 @@ static const char * TAG = "esp32-manager-example";
 
 #define EXAMPLE_ENTRIES_MAX         2
 
-int16_t counter = 0;
-uint32_t delay = 1000;
+volatile int16_t counter = 0;
+volatile uint32_t delay = 1000;
+
+/**
+ * @brief   Example function that shows how to read a value from a string and preprocess it before updating the variable.
+ */
+esp_err_t counter_entry_to_string(esp32_manager_entry_t * entry, char * dest)
+{
+    sprintf(dest, "%d", counter);
+    return ESP_OK;
+}
+
+esp_err_t delay_entry_from_string(esp32_manager_entry_t * entry, char * source)
+{
+    int16_t converted = atoi(source);
+    if(converted <= 0) {
+        ESP_LOGE(TAG, "Delay cannot be 0 or negative");
+        return ESP_FAIL;
+    } else if(converted > 5000) {
+        ESP_LOGW(TAG, "Delay cannot be greater than 5000. Clipping.");
+        converted = 5000;
+    } 
+
+    delay = converted;
+    ESP_LOGD(TAG, "Delay updated to %d", counter);
+    return ESP_OK;
+}
+
+/**
+ * @brief   Example function that shows how to convert a value to string.
+ */
+esp_err_t delay_entry_to_string(esp32_manager_entry_t * entry, char * dest)
+{
+    sprintf(dest, "%d", delay);
+    return ESP_OK;
+}
 
 esp32_manager_entry_t * example_entries[EXAMPLE_ENTRIES_MAX];
 
@@ -34,7 +68,9 @@ esp32_manager_entry_t counter_entry = {
     .friendly = EXAMPLE_COUNTER_FRIENDLY,
     .type = i16,
     .value = (void *) &counter,
-    .attributes = ESP32_MANAGER_ATTR_READ
+    .attributes = ESP32_MANAGER_ATTR_READ, // we do not want counter to be updated via web -> just READ, NO WRITE
+    // if .from_string is missing it will use a generic one based on data-type.
+    .to_string = &counter_entry_to_string
 };
 
 esp32_manager_entry_t delay_entry = {
@@ -42,7 +78,9 @@ esp32_manager_entry_t delay_entry = {
     .friendly = EXAMPLE_DELAY_FRIENDLY,
     .type = u32,
     .value = (void *) &delay,
-    .attributes = ESP32_MANAGER_ATTR_READWRITE
+    .attributes = ESP32_MANAGER_ATTR_READWRITE, // delay can be updated via web
+    .from_string = &delay_entry_from_string,
+    .to_string = &delay_entry_to_string
 };
 
 void app_main(void)
